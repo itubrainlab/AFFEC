@@ -1,0 +1,9 @@
+
+numpy
+pandas
+scikit-learn
+autogluon
+neurokit2
+tabulate
+matplotlib
+jupyter
