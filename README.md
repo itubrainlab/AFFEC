@@ -75,20 +75,17 @@ Set False to disable a modality.
 diff
 Copy
 Edit
-================================================================================
-Classification Performance Using Multimodal Features (Eye, Face, GSR, Personality)
-================================================================================
-+------------+------------------+------------------+--------------+--------------+
-| Metric     | Perceived Arousal | Perceived Valence | Felt Arousal | Felt Valence |
-+------------+------------------+------------------+--------------+--------------+
-| Best Model | XGBoost          | LightGBM         | CatBoost     | NN_TORCH     |
-| High       | 0.85 ± 0.02      | 0.79 ± 0.03      | 0.88 ± 0.01  | 0.82 ± 0.02  |
-| Medium     | 0.78 ± 0.04      | 0.75 ± 0.02      | 0.80 ± 0.03  | 0.77 ± 0.02  |
-| Low        | 0.72 ± 0.03      | 0.68 ± 0.02      | 0.74 ± 0.03  | 0.70 ± 0.04  |
-| Macro Avg  | 0.78 ± 0.02      | 0.74 ± 0.03      | 0.81 ± 0.02  | 0.76 ± 0.03  |
-| Accuracy   | 0.80 ± 0.01      | 0.76 ± 0.02      | 0.83 ± 0.01  | 0.78 ± 0.02  |
-+------------+------------------+------------------+--------------+--------------+
-================================================================================
+## Classification Performance Using Multimodal Features (Eye, Facial Action Units, GSR, Personality)
+
+| Metric     | Perceived Arousal         | Perceived Valence         | Felt Arousal              | Felt Valence              |
+|------------|---------------------------|---------------------------|---------------------------|---------------------------|
+| Best Model | XGBoost                   | XGBoost                   | LightGBMXT                | NeuralNetFastAI           |
+| High       | 0.4565 ± 0.0160           | 0.2317 ± 0.0249           | 0.2692 ± 0.0401           | 0.4730 ± 0.0304           |
+| Medium     | 0.3619 ± 0.0168           | 0.4306 ± 0.0168           | 0.4845 ± 0.0252           | 0.2938 ± 0.0270           |
+| Low        | 0.4945 ± 0.0212           | 0.6104 ± 0.0148           | 0.6797 ± 0.0162           | 0.6133 ± 0.0249           |
+| Macro Avg  | 0.4377 ± 0.0080           | 0.4242 ± 0.0152           | 0.4778 ± 0.0142           | 0.4600 ± 0.0194           |
+| Accuracy   | 0.4415 ± 0.0085           | 0.5057 ± 0.0145           | 0.5680 ± 0.0158           | 0.5139 ± 0.0218           |
+
 📌 Experiment Configurations
 The notebook allows different modality combinations to compare performance.
 
