@@ -49,7 +49,7 @@ This project allows flexible selection of **input modalities**:
 ### **1️⃣ Install Dependencies**
 ```bash
 pip install -r requirements.txt
-2️⃣ Prepare Data (Download the data from [link](https://doi.org/10.5281/zenodo.14794876))
+2️⃣ Prepare Data (Download the data from [this link](https://doi.org/10.5281/zenodo.14794876))
 Place your Eye Tracking, AU, GSR, and Personality data inside the /data directory.
 Ensure the data follows the correct format.
 3️⃣ Run Jupyter Notebook
