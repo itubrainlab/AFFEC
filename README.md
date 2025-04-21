@@ -46,67 +46,89 @@ This project allows flexible selection of **input modalities**:
 ---
 
 ## ⚙ **Installation & Setup**
+
 ### **1️⃣ Install Dependencies**
 ```bash
 pip install -r requirements.txt
-2️⃣ Prepare Data (Download the data from [this link](https://doi.org/10.5281/zenodo.14794876))
-Place your Eye Tracking, AU, GSR, and Personality data inside the /data directory.
+```
+
+### **2️⃣ Prepare Data**
+Download the data from [this link](https://doi.org/10.5281/zenodo.14794876).  
+Place your Eye Tracking, AU, GSR, and Personality data inside the `/data` directory.  
 Ensure the data follows the correct format.
-3️⃣ Run Jupyter Notebook
+
+### **3️⃣ Run Jupyter Notebook**
 Launch Jupyter Notebook and open:
+
+```bash
 jupyter notebook notebook.ipynb
+```
+
 Run each cell to train models and evaluate results.
 
-🛠 Configuration
-Modify the USE_MODALITIES dictionary in the notebook to enable/disable specific modalities:
+---
 
-python
-Copy
-Edit
+### 🛠 **Configuration**
+
+Modify the `USE_MODALITIES` dictionary in the notebook to enable/disable specific modalities:
+
+```python
 USE_MODALITIES = {
     "eye": True,            # Use Eye Tracking data
     "action_units": True,   # Use Facial AU data
     "gsr": True,            # Use GSR data
     "personality": True     # Use Personality data
 }
-Set True to enable a modality.
-Set False to disable a modality.
-📈 Example Output
-diff
-Copy
-Edit
-## Classification Performance Using Multimodal Features (Eye, Facial Action Units, GSR, Personality)
+```
 
-| Metric     | Perceived Arousal         | Perceived Valence         | Felt Arousal              | Felt Valence              |
-|------------|---------------------------|---------------------------|---------------------------|---------------------------|
-| Best Model | XGBoost                   | XGBoost                   | LightGBMXT                | NeuralNetFastAI           |
-| High       | 0.4565 ± 0.0160           | 0.2317 ± 0.0249           | 0.2692 ± 0.0401           | 0.4730 ± 0.0304           |
-| Medium     | 0.3619 ± 0.0168           | 0.4306 ± 0.0168           | 0.4845 ± 0.0252           | 0.2938 ± 0.0270           |
-| Low        | 0.4945 ± 0.0212           | 0.6104 ± 0.0148           | 0.6797 ± 0.0162           | 0.6133 ± 0.0249           |
-| Macro Avg  | 0.4377 ± 0.0080           | 0.4242 ± 0.0152           | 0.4778 ± 0.0142           | 0.4600 ± 0.0194           |
-| Accuracy   | 0.4415 ± 0.0085           | 0.5057 ± 0.0145           | 0.5680 ± 0.0158           | 0.5139 ± 0.0218           |
+- Set `True` to enable a modality.  
+- Set `False` to disable a modality.
 
-📌 Experiment Configurations
-The notebook allows different modality combinations to compare performance.
+---
 
-Configuration	Eye Tracking	AU	GSR	Personality	Purpose
-Full Multimodal	✅	✅	✅	✅	Uses all available data.
-Eye Tracking Only	✅	❌	❌	❌	Evaluates eye-tracking data in isolation.
-Facial AU Only	❌	✅	❌	❌	Uses only facial expressions for classification.
-GSR Only	❌	❌	✅	❌	Evaluates physiological arousal.
-Multimodal (No Personality)	✅	✅	✅	❌	Tests classification without personality factors.
-🔧 Requirements
-All required dependencies are listed in requirements.txt.
+### 📈 **Example Output**
 
-Dependencies
-bash
-Copy
-Edit
+#### Classification Performance Using Multimodal Features (Eye, Facial Action Units, GSR, Personality)
+
+| Metric     | Perceived Arousal | Perceived Valence | Felt Arousal | Felt Valence |
+|------------|-------------------|-------------------|--------------|--------------|
+| Best Model | XGBoost           | XGBoost           | LightGBMXT   | NeuralNetFastAI |
+| High       | 0.4565 ± 0.0160   | 0.2317 ± 0.0249   | 0.2692 ± 0.0401 | 0.4730 ± 0.0304 |
+| Medium     | 0.3619 ± 0.0168   | 0.4306 ± 0.0168   | 0.4845 ± 0.0252 | 0.2938 ± 0.0270 |
+| Low        | 0.4945 ± 0.0212   | 0.6104 ± 0.0148   | 0.6797 ± 0.0162 | 0.6133 ± 0.0249 |
+| Macro Avg  | 0.4377 ± 0.0080   | 0.4242 ± 0.0152   | 0.4778 ± 0.0142 | 0.4600 ± 0.0194 |
+| Accuracy   | 0.4415 ± 0.0085   | 0.5057 ± 0.0145   | 0.5680 ± 0.0158 | 0.5139 ± 0.0218 |
+
+---
+
+### 📌 **Experiment Configurations**
+
+The notebook supports different modality combinations to compare performance:
+
+| Configuration                 | Eye Tracking | AU  | GSR | Personality | Purpose                                           |
+|------------------------------|--------------|-----|-----|-------------|---------------------------------------------------|
+| Full Multimodal              | ✅           | ✅  | ✅  | ✅          | Uses all available data.                          |
+| Eye Tracking Only            | ✅           | ❌  | ❌  | ❌          | Evaluates eye-tracking data in isolation.         |
+| Facial AU Only               | ❌           | ✅  | ❌  | ❌          | Uses only facial expressions for classification.  |
+| GSR Only                     | ❌           | ❌  | ✅  | ❌          | Evaluates physiological arousal.                  |
+| Multimodal (No Personality)  | ✅           | ✅  | ✅  | ❌          | Tests classification without personality factors. |
+
+---
+
+### 🔧 **Requirements**
+
+All required dependencies are listed in `requirements.txt`.
+
+#### 📦 Dependencies
+```bash
 pip install -r requirements.txt
-Software Requirements
-Python >=3.8
-Jupyter Notebook
-AutoGluon
+```
+
+#### 🧰 Software Requirements
+- Python ≥ 3.8  
+- Jupyter Notebook  
+- AutoGluon
+
 Pandas, NumPy, SciKit-Learn
 NeuroKit2 (for GSR processing)
 Tabulate (for formatted result display)
