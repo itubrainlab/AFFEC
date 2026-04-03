@@ -1,0 +1,18 @@
+# Local-only AI workflow and project memory files
+AGENTS.md
+.github/copilot-instructions.md
+
+# Keep all project docs/logs local unless explicitly included
+docs/
+logs/
+
+# Data policy: never push dataset artifacts.
+# Keep only the dataset README under data/raw tracked.
+data/**
+!data/raw/
+!data/raw/README.md
+
+# Python cache
+__pycache__/
+*.py[cod]
+.DS_Store

@@ -2,6 +2,7 @@
 numpy
 pandas
 scikit-learn
+statsmodels
 autogluon
 neurokit2
 tabulate

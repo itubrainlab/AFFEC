@@ -1,134 +1,156 @@
-# AFFEC
-Advancing Face-to-Face Emotion Communication: A Multimodal Dataset (AFFEC)
-# Multimodal Emotion Classification
+# AFFEC Devkit
 
-## 📌 Overview
-This project implements a **multimodal emotion classification pipeline** using **Eye Tracking, Facial Action Units (AU), Galvanic Skin Response (GSR), and Personality Traits**. The system extracts features, trains **AutoGluon-based machine learning models**, evaluates their performance with **5-Fold Cross-Validation**, and presents results in a **structured table format**.
+Developer toolkit for the **AFFEC (Advancing Face-to-Face Emotion Communication)** dataset.
 
-This pipeline is designed for applications in **affective computing, human-computer interaction (HCI), and psychological research**.
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.14794876.svg)](https://doi.org/10.5281/zenodo.14794876)
+[![License: CC0](https://img.shields.io/badge/License-CC0_1.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
 
----
-
-## 📊 **Modality Breakdown**
-This project allows flexible selection of **input modalities**:
-
-| **Modality** | **Description** |
-|-------------|----------------|
-| **Eye Tracking** | Measures gaze, fixation, and pupil dilation. |
-| **Facial Action Units (AU)** | Detects facial muscle movements and microexpressions. |
-| **Galvanic Skin Response (GSR)** | Captures physiological arousal through skin conductance. |
-| **Personality Traits** | Uses Big Five Personality Factors (OCEAN) for behavioral analysis. |
+AFFEC is a multimodal affective computing dataset capturing **72 participants** across **84 simulated emotional dialogues** (~5 000 trials, 20 000+ emotion labels). Modalities: **EEG, Eye Tracking, Pupil, GSR, Facial Action Units, Cursor Tracking**, with **felt and perceived** arousal/valence labels.
 
 ---
 
-## 🚀 **How It Works**
-### **1️⃣ Feature Extraction**
-- Extracts statistical features (**mean, std, min, max**) from **Eye Tracking, AU, and GSR** data.
-- Introduces **randomized personality traits** for robustness.
-- Merges selected modalities dynamically.
+## What this repo is
 
-### **2️⃣ Emotion Label Discretization**
-- Converts **Perceived & Felt Arousal/Valence** into **Low, Medium, High** bins.
-
-### **3️⃣ Model Training**
-- Uses **AutoGluon TabularPredictor** for **automated model selection & hyperparameter tuning**.
-- Trains models for **each emotion category**.
-
-### **4️⃣ Results Evaluation**
-- Performs **5-Fold Cross-Validation** to measure reliability.
-- Displays **F1 Scores & Accuracy** in a structured table.
+| Component | Description |
+|-----------|-------------|
+| `affec/` | Python package — data loading, feature extraction, model wrappers, utilities |
+| `scripts/` | CLI scripts: download data, run full analysis, statistical analysis, prepare Zenodo upload |
+| `multimodal_emotion_recogntion.ipynb` | Full pipeline notebook (feature extraction → AutoGluon → 5-fold CV → results table) |
+| `demo_analysis.ipynb` | Shorter demo showing end-to-end workflow |
+| `data/raw/README.md` | Dataset schema, modality specs, changelog (v2 JSON sidecar corrections) |
 
 ---
 
-## 📌 **Project Structure**
-📂 multimodal-emotion-classification │── 📄 README.md # Project documentation │── 📄 requirements.txt # Dependencies │── 📄 notebook.ipynb # Jupyter notebook containing code │── 📂 data # Folder to store input data (Eye, AU, GSR, Personality) │── 📂 models # Folder to save trained models │── 📂 results # Folder for storing classification results
+## Quick start
 
----
+### 1. Install dependencies
 
-## ⚙ **Installation & Setup**
-
-### **1️⃣ Install Dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### **2️⃣ Prepare Data**
-Download the data from [this link](https://doi.org/10.5281/zenodo.14794876).  
-Place your Eye Tracking, AU, GSR, and Personality data inside the `/data` directory.  
-Ensure the data follows the correct format.
-
-### **3️⃣ Run Jupyter Notebook**
-Launch Jupyter Notebook and open:
+### 2. Download the dataset
 
 ```bash
-jupyter notebook notebook.ipynb
+python scripts/download_data.py
 ```
 
-Run each cell to train models and evaluate results.
+This downloads all modality zips from Zenodo ([DOI 10.5281/zenodo.14794876](https://doi.org/10.5281/zenodo.14794876)) into `data/raw/`.
+
+### 3. Run the pipeline
+
+**Interactive (recommended):**
+
+```bash
+jupyter notebook demo_analysis.ipynb
+```
+
+Run notebook cells from top to bottom to initialize shared variables (`DATA_DIR`, `Config`, imports) before running analysis cells.
+
+**Full analysis:**
+
+```bash
+python scripts/run_full_analysis.py
+python scripts/run_statistical_analysis.py
+```
+
+**Quick validation (8 participants):**
+
+```bash
+python scripts/run_full_analysis.py --all-targets --max-participants 8
+python scripts/run_statistical_analysis.py --max-participants 8
+```
 
 ---
 
-### 🛠 **Configuration**
+## Modality configuration
 
-Modify the `USE_MODALITIES` dictionary in the notebook to enable/disable specific modalities:
+Toggle modalities in the notebook or pass them programmatically:
 
 ```python
 USE_MODALITIES = {
-    "eye": True,            # Use Eye Tracking data
-    "action_units": True,   # Use Facial AU data
-    "gsr": True,            # Use GSR data
-    "personality": True     # Use Personality data
+    "eye":           True,   # Eye tracking (gaze, fixation, pupil dilation)
+    "action_units":  True,   # Facial Action Units (AU)
+    "gsr":           True,   # Galvanic Skin Response
+    "personality":   True    # Big Five personality traits (OCEAN)
 }
 ```
 
-- Set `True` to enable a modality.  
-- Set `False` to disable a modality.
+| Configuration | Eye | AU | GSR | Personality |
+|---|:---:|:---:|:---:|:---:|
+| Full multimodal | ✅ | ✅ | ✅ | ✅ |
+| Eye only | ✅ | ❌ | ❌ | ❌ |
+| AU only | ❌ | ✅ | ❌ | ❌ |
+| GSR only | ❌ | ❌ | ✅ | ❌ |
+| No personality | ✅ | ✅ | ✅ | ❌ |
 
 ---
 
-### 📈 **Example Output**
+## Baseline results (5-fold CV, full multimodal)
 
-#### Classification Performance Using Multimodal Features (Eye, Facial Action Units, GSR, Personality)
-
-| Metric     | Perceived Arousal | Perceived Valence | Felt Arousal | Felt Valence |
-|------------|-------------------|-------------------|--------------|--------------|
-| Best Model | XGBoost           | XGBoost           | LightGBMXT   | NeuralNetFastAI |
-| High       | 0.4565 ± 0.0160   | 0.2317 ± 0.0249   | 0.2692 ± 0.0401 | 0.4730 ± 0.0304 |
-| Medium     | 0.3619 ± 0.0168   | 0.4306 ± 0.0168   | 0.4845 ± 0.0252 | 0.2938 ± 0.0270 |
-| Low        | 0.4945 ± 0.0212   | 0.6104 ± 0.0148   | 0.6797 ± 0.0162 | 0.6133 ± 0.0249 |
-| Macro Avg  | 0.4377 ± 0.0080   | 0.4242 ± 0.0152   | 0.4778 ± 0.0142 | 0.4600 ± 0.0194 |
-| Accuracy   | 0.4415 ± 0.0085   | 0.5057 ± 0.0145   | 0.5680 ± 0.0158 | 0.5139 ± 0.0218 |
+| Metric | Perceived Arousal | Perceived Valence | Felt Arousal | Felt Valence |
+|--------|:-----------------:|:-----------------:|:------------:|:------------:|
+| Best model | XGBoost | XGBoost | LightGBMXT | NeuralNetFastAI |
+| High F1 | 0.457 ± 0.016 | 0.232 ± 0.025 | 0.269 ± 0.040 | 0.473 ± 0.030 |
+| Medium F1 | 0.362 ± 0.017 | 0.431 ± 0.017 | 0.485 ± 0.025 | 0.294 ± 0.027 |
+| Low F1 | 0.495 ± 0.021 | 0.610 ± 0.015 | 0.680 ± 0.016 | 0.613 ± 0.025 |
+| Macro F1 | 0.438 ± 0.008 | 0.424 ± 0.015 | 0.478 ± 0.014 | 0.460 ± 0.019 |
+| Accuracy | 0.442 ± 0.009 | 0.506 ± 0.015 | 0.568 ± 0.016 | 0.514 ± 0.022 |
 
 ---
 
-### 📌 **Experiment Configurations**
+## Dataset
 
-The notebook supports different modality combinations to compare performance:
+See [`data/raw/README.md`](data/raw/README.md) for full schema, modality specs, and the v2 changelog (April 2026 videostream JSON sidecar corrections).
 
-| Configuration                 | Eye Tracking | AU  | GSR | Personality | Purpose                                           |
-|------------------------------|--------------|-----|-----|-------------|---------------------------------------------------|
-| Full Multimodal              | ✅           | ✅  | ✅  | ✅          | Uses all available data.                          |
-| Eye Tracking Only            | ✅           | ❌  | ❌  | ❌          | Evaluates eye-tracking data in isolation.         |
-| Facial AU Only               | ❌           | ✅  | ❌  | ❌          | Uses only facial expressions for classification.  |
-| GSR Only                     | ❌           | ❌  | ✅  | ❌          | Evaluates physiological arousal.                  |
-| Multimodal (No Personality)  | ✅           | ✅  | ✅  | ❌          | Tests classification without personality factors. |
+**Download:** [https://doi.org/10.5281/zenodo.14794876](https://doi.org/10.5281/zenodo.14794876)
+
+### Data policy (important)
+
+This repository is a **data-free devkit**. Raw AFFEC files are not committed to git.
+
+- Download data only via [scripts/download_data.py](scripts/download_data.py)
+- Store downloaded files under `data/raw/` locally
+- Do not commit any files under `data/` except [data/raw/README.md](data/raw/README.md)
+
+To reconstruct the local dataset layout:
+
+```bash
+python scripts/download_data.py
+```
 
 ---
 
-### 🔧 **Requirements**
+## Local-only folders in this devkit
 
-All required dependencies are listed in `requirements.txt`.
+- `docs/` and `logs/` are treated as local working material.
+- `data/zenodo_upload/` is local packaging output for Zenodo updates.
+- Large raw data artifacts (`data/raw/sub-*`, modality `.zip` files, `.bak`) are ignored.
 
-#### 📦 Dependencies
+---
+
+## Requirements
+
+- Python ≥ 3.8
+- AutoGluon, Pandas, NumPy, scikit-learn, NeuroKit2, Tabulate
+
 ```bash
 pip install -r requirements.txt
 ```
 
-#### 🧰 Software Requirements
-- Python ≥ 3.8  
-- Jupyter Notebook  
-- AutoGluon
+---
 
-Pandas, NumPy, SciKit-Learn
-NeuroKit2 (for GSR processing)
-Tabulate (for formatted result display)
+## Citation
+
+If you use AFFEC in your research, please cite:
+
+```
+[Citation to be added upon publication]
+```
+
+---
+
+## License
+
+Dataset: [CC0 1.0 Universal](https://creativecommons.org/publicdomain/zero/1.0/)  
+Code: MIT ([LICENSE](LICENSE))
