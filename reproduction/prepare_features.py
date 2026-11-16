@@ -55,3 +55,32 @@ df = pd.DataFrame(rows)
 
 print("Dataset shape:", df.shape)
 print(df.head())
+
+
+# Check data quality
+print("\nDataset quality check:")
+print("Missing values:", df.isna().sum().sum())
+print("Duplicate rows:", df.duplicated().sum())
+
+print("\nMissing values by column:")
+print(df.isna().sum()[df.isna().sum() > 0])
+
+# Check trials with missing AU features
+missing_au = df["AU01_r_mean"].isna()
+
+print("\nTrials with missing AU features:", missing_au.sum())
+
+print("Duplicates among missing AU trials:",
+      df[missing_au].duplicated().sum())
+
+print("Duplicates among complete AU trials:",
+      df[~missing_au].duplicated().sum())
+
+
+# Save extracted features
+output_path = Path("data/processed/au_features.csv")
+output_path.parent.mkdir(parents=True, exist_ok=True)
+
+df.to_csv(output_path, index=False)
+
+print(f"\nSaved dataset to {output_path}")

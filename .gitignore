@@ -16,3 +16,6 @@ data/**
 __pycache__/
 *.py[cod]
 .DS_Store
+
+# Virtual environment
+.venv/
