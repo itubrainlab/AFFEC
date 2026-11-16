@@ -2,16 +2,33 @@
 from affec.data.loader import AFFECDataLoader
 from affec.features.extractor import ActionUnitFeatureExtractor
 import pandas as pd
+from pathlib import Path
 
 # Initialize the authors' data loader
 loader = AFFECDataLoader()
 
-# Start with one participant and one run
-participant = "sub-aerj"
-run = 0
 
-# Load the trials and their emotion labels
-trials = loader.merge_trial_data(participant, run)
+from pathlib import Path
+
+# Find all participant folders in the dataset
+data_dir = Path("data/raw")
+participants = sorted(
+    folder.name for folder in data_dir.glob("sub-*")
+    if folder.is_dir()
+)
+
+print("Number of participants:", len(participants))
+
+# Load trials from all participants and runs
+trials = []
+
+for participant in participants:
+    for run in range(4):
+        run_trials = loader.merge_trial_data(participant, run)
+        trials.extend(run_trials)
+
+    print(f"Loaded {participant}")
+
 
 # Extract facial features for each trial
 rows = []
